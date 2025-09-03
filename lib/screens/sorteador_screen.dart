@@ -8,7 +8,7 @@ class SorteadorScreen extends StatefulWidget {
   const SorteadorScreen({super.key, required this.title});
 
   @override
-  _SorteadorScreenState createState() => _SorteadorScreenState();
+  State<SorteadorScreen> createState() => _SorteadorScreenState();
 }
 
 class _SorteadorScreenState extends State<SorteadorScreen> {
@@ -29,7 +29,8 @@ class _SorteadorScreenState extends State<SorteadorScreen> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('Por favor, insira um intervalo de números válido.')),
+          content: Text('Por favor, insira um intervalo válido.'),
+        ),
       );
     }
   }
@@ -38,89 +39,84 @@ class _SorteadorScreenState extends State<SorteadorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // O título agora é dinâmico, vindo do parâmetro do widget.
         title: Text(widget.title),
         backgroundColor: Theme.of(context).primaryColor,
         foregroundColor: Colors.white,
       ),
-      // O 'const' foi removido para resolver o segundo erro de compilação.
-      drawer: MenuComponent(),
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Text(
-                'Defina o intervalo para o sorteio',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(height: 32),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: _minController,
-                      decoration: const InputDecoration(
-                        labelText: 'Número Mínimo',
-                        border: OutlineInputBorder(),
-                      ),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly
-                      ],
+      drawer: const MenuComponent(),
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Text(
+              'Defina o intervalo para o sorteio',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(height: 32),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: _minController,
+                    decoration: const InputDecoration(
+                      labelText: 'Mínimo',
+                      border: OutlineInputBorder(),
                     ),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: TextFormField(
-                      controller: _maxController,
-                      decoration: const InputDecoration(
-                        labelText: 'Número Máximo',
-                        border: OutlineInputBorder(),
-                      ),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly
-                      ],
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: TextFormField(
+                    controller: _maxController,
+                    decoration: const InputDecoration(
+                      labelText: 'Máximo',
+                      border: OutlineInputBorder(),
                     ),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   ),
-                ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 40),
+            const Text(
+              'O número sorteado é:',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 24, color: Colors.black54),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              _resultado,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 72,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).primaryColor,
               ),
-              const SizedBox(height: 40),
-              const Text(
-                'O número sorteado é:',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 24, color: Colors.black54),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                _resultado,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 72,
+            ),
+            const SizedBox(height: 40),
+            ElevatedButton(
+              onPressed: _sortear,
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                textStyle: const TextStyle(
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).primaryColor,
+                ),
+                backgroundColor: Theme.of(context).primaryColor,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              const SizedBox(height: 40),
-              ElevatedButton(
-                onPressed: _sortear,
-                style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    textStyle: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
-                    backgroundColor: Theme.of(context).primaryColor,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    )),
-                child: const Text('Sortear Agora'),
-              ),
-            ],
-          ),
+              child: const Text('Sortear Agora'),
+            ),
+          ],
         ),
       ),
     );

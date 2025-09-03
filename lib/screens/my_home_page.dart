@@ -54,13 +54,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     if (_usuarioController.text == 'admin' && _senhaController.text == '123') {
-                      // Navega para a tela de boas-vindas
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => BemvindoScreen()),
                       );
                     } else {
-                      // Mostra erro de login
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Usuário ou senha incorretos')),
                       );
